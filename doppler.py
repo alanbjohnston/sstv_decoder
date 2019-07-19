@@ -9,7 +9,7 @@ import ssl
 
 
 C = 300000000.0
-F0 = 145800000.0
+F0 = 434900000.0
 
 LATITUDE = "52.219308"
 LONGITUDE = "4.419926"
@@ -114,12 +114,13 @@ try:
         myloc.date = time.strftime('%Y/%m/%d %H:%M:%S', time.gmtime())
         iss.tle.compute(myloc)
         alt = math.degrees(iss.tle.alt)
+        #print('alt: {0:0.1f} degrees'.format(alt))
 
         if alt > 0:  # iss is flying over our location
             new_freq = int(F0 - iss.tle.range_velocity * F0 / C)  # doppler
             if new_freq != freq:
                 print(new_freq, round(alt, 2), myloc.date)
-                rtl.set_freq(new_freq)  # set new frequency in rtl_fm
+#                rtl.set_freq(new_freq)  # set new frequency in rtl_fm
             freq = new_freq
         elif iss.tle_expired:
             iss.reload()  # we could be running for days / weeks
